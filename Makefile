@@ -2,7 +2,7 @@ CFLAGS = -Werror -Wextra -Wall -MMD -g3 -pthread
 
 INCLUDES = -Iincludes
 
-SRC_DIR = src
+SRC_DIR = srcs
 
 OBJ_DIR = objs
 
