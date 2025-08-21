@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:48:25 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/08/02 17:01:28 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/08/09 15:45:34 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,3 +52,10 @@ long	ft_atol(const char *str)
 	return (result);
 }
 
+long	get_time_in_ms(void)
+{
+	struct timeval tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}

@@ -6,57 +6,95 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:19:00 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/08/02 21:16:22 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/08/21 20:05:50 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	init_data(t_data *data, int ac, char **av)
+static int	init_data(t_data *data, int ac, char **av)
 {
-	if (ac != 5 && ac != 6)
-		return (1);
-	data->num_philo = ft_atoi(av[1]);
+	// if (ac != 5 && ac != 6)
+	// 	return (1);
+	data->number_of_philo = ft_atoi(av[1]);
 	data->time_to_die = ft_atol(av[2]);
 	data->time_to_eat = ft_atol(av[3]);
 	data->time_to_sleep = ft_atol(av[4]);
 	if (ac == 6)
 		data->num_of_meal = ft_atoi(av[5]);
-	data->philo = malloc(sizeof(t_philo) * data->num_philo);
+	else
+		data->num_of_meal = -1;
+	if (data->number_of_philo <= 0 || data->time_to_die <= 0
+		|| data->time_to_eat <= 0 || data->time_to_sleep <= 0 || (ac == 6
+			&& data->num_of_meal <= 0))
+		return (1);
+	data->philo = malloc(sizeof(t_philo) * data->number_of_philo);
 	if (!data->philo)
 		return (1);
-	if (pthread_mutex_init(&data->print_lock, NULL) != 0)
-		return (1);
-	if (pthread_mutex_init(&data->stop_mutex, NULL) != 0)
+	if (pthread_mutex_init(&data->print_lock, NULL) != 0
+		|| pthread_mutex_init(&data->stop_mutex, NULL) != 0)
 		return (1);
 	data->stop_dinner = 0;
+	data->start_time = get_time_in_ms();
 	return (0);
 }
 
-int	init_philo(t_data *data)
+static int	init_philo(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (i < data->num_philo)
+	while (i < data->number_of_philo)
 	{
-		if (pthread_mutex_init(&data->philo->right_fork, NULL) != 0)
+		if (pthread_mutex_init(&data->philo[i].right_fork, NULL) != 0)
 			return (1);
 		i++;
 	}
 	i = 0;
-	while (i < data->num_philo)
+	while (i < data->number_of_philo)
 	{
 		data->philo[i].id = i + 1;
-		data->philo[i].last_meal_time = 0;
+		data->philo[i].last_meal_time = data->start_time;
 		data->philo[i].data = data;
-		if(data->philo[i].id == data->num_philo)
+		data->philo[i].thread = 0;
+		if (data->philo[i].id == data->number_of_philo)
 			data->philo[i].left_fork = &data->philo[0].right_fork;
 		else
-		{
 			data->philo[i].left_fork = &data->philo[i + 1].right_fork;
-		}
 		i++;
 	}
 	return (0);
 }
+int	init_structs(t_data *data, int ac, char **av)
+{
+	if (init_data(data, ac, av) != 0 || init_philo(data) != 0)
+		return (1);
+	return (0);
+}
+
+// int	create_philos_pthread(t_data *data, int ac, char **av)
+// {
+// 	int	i;
+
+// 	if (init_structs(data, ac, av) != 0)
+// 		return (1);
+// 	data->start_time = get_time_in_ms();
+// 	if (pthread_create(&data->monitor, NULL, FONCTION_MONITOR,
+// 			(void *)data) != 0)
+// 	{
+// 		write(2, "Could not create monitor thread\n", 33);
+// 		return (1);
+// 	}
+// 	data->monitor_created = 1;
+// 	i = 0;
+// 	while (i < data->number_of_philo)
+// 	{
+// 		if (pthread_create(&data->philo[i].thread, NULL, FONCTION_ROUTINE_PHILO,
+// 				(void *)&data->philo[i]) != 0)
+// 		{
+// 			write(2, "Could not create philosopher thread\n", 37);
+// 			break ;
+// 		}
+// 		i++;
+// 	}
+// }

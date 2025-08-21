@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:42:53 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/08/02 21:14:32 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/08/21 20:06:40 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ int	main(int ac, char **av)
 
 	if (ac != 5 && ac != 6)
 		return (1);
-	init_data(&data, ac, av);
-	init_philo(&data);
+	if (init_structs(&data, ac, av) != 0)
+	{
+		printf("error : init failed\n");
+		return (1);
+	}
+	return (0);
 }
