@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:19:00 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/08/21 20:05:50 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/05 19:19:00 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	init_data(t_data *data, int ac, char **av)
 {
-	// if (ac != 5 && ac != 6)
-	// 	return (1);
+	if (ac != 5 && ac != 6)
+		return (1);
 	data->number_of_philo = ft_atoi(av[1]);
 	data->time_to_die = ft_atol(av[2]);
 	data->time_to_eat = ft_atol(av[3]);
@@ -72,29 +72,31 @@ int	init_structs(t_data *data, int ac, char **av)
 	return (0);
 }
 
-// int	create_philos_pthread(t_data *data, int ac, char **av)
-// {
-// 	int	i;
+int	init_thread(t_data *data)
+{
+	int	i;
+	int	thread_created;
 
-// 	if (init_structs(data, ac, av) != 0)
-// 		return (1);
-// 	data->start_time = get_time_in_ms();
-// 	if (pthread_create(&data->monitor, NULL, FONCTION_MONITOR,
-// 			(void *)data) != 0)
-// 	{
-// 		write(2, "Could not create monitor thread\n", 33);
-// 		return (1);
-// 	}
-// 	data->monitor_created = 1;
-// 	i = 0;
-// 	while (i < data->number_of_philo)
-// 	{
-// 		if (pthread_create(&data->philo[i].thread, NULL, FONCTION_ROUTINE_PHILO,
-// 				(void *)&data->philo[i]) != 0)
-// 		{
-// 			write(2, "Could not create philosopher thread\n", 37);
-// 			break ;
-// 		}
-// 		i++;
-// 	}
-// }
+	i = 0;
+	thread_created = 0;
+	// Création des threads pour chaque philosophe
+	while (i < data->number_of_philo)
+	{
+		if (pthread_create(&data->philo[i].thread, NULL, routine_monitor,
+				(void *)&data->philo[i]) != 0)
+			break ;
+		thread_created++;
+		i++;
+	}
+	// Si erreur pendant la création, on attend ceux déjà lancés
+	if (thread_created < data->number_of_philo)
+	{
+		while (thread_created > 0)
+		{
+			pthread_join(data->philo[thread_created - 1].thread, NULL);
+			thread_created--;
+		}
+		return (1);
+	}
+	return (0);
+}
