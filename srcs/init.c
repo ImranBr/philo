@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:19:00 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/05 19:19:00 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/11 00:01:41 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static int	init_data(t_data *data, int ac, char **av)
 		data->num_of_meal = ft_atoi(av[5]);
 	else
 		data->num_of_meal = -1;
-	if (data->number_of_philo <= 0 || data->time_to_die <= 0
-		|| data->time_to_eat <= 0 || data->time_to_sleep <= 0 || (ac == 6
+	if (data->number_of_philo <= 0 || data->time_to_die < 60
+		|| data->time_to_eat < 60 || data->time_to_sleep < 60 || (ac == 6
 			&& data->num_of_meal <= 0))
 		return (1);
 	data->philo = malloc(sizeof(t_philo) * data->number_of_philo);
@@ -65,6 +65,7 @@ static int	init_philo(t_data *data)
 	}
 	return (0);
 }
+
 int	init_structs(t_data *data, int ac, char **av)
 {
 	if (init_data(data, ac, av) != 0 || init_philo(data) != 0)
@@ -79,16 +80,14 @@ int	init_thread(t_data *data)
 
 	i = 0;
 	thread_created = 0;
-	// Création des threads pour chaque philosophe
 	while (i < data->number_of_philo)
 	{
-		if (pthread_create(&data->philo[i].thread, NULL, routine_monitor,
-				(void *)&data->philo[i]) != 0)
-			break ;
+		// // if (pthread_create(&data->philo[i].thread, NULL, routine_monitor,
+		// 		(void *)&data->philo[i]) != 0)
+		// 	break ;
 		thread_created++;
 		i++;
 	}
-	// Si erreur pendant la création, on attend ceux déjà lancés
 	if (thread_created < data->number_of_philo)
 	{
 		while (thread_created > 0)
