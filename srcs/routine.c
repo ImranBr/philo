@@ -6,13 +6,14 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:07:49 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/08/21 20:06:10 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/12 16:34:41 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-// void *routine_philo(void *)
-// {
-    
-// }
+void *monitor_routine(void *arg)
+{
+    (void)arg;
+    return NULL;
+}

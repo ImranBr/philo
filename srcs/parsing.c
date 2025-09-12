@@ -6,13 +6,13 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:34:18 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/11 00:03:00 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/12 16:31:41 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	check_number(const char *str)
+static int	check_number(const char *str)
 {
 	int		i;
 	long	result;
@@ -56,3 +56,4 @@ int	is_not_valid(int ac, char **av)
 	}
 	return (0);
 }
+

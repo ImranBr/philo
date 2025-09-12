@@ -6,19 +6,19 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 18:46:41 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/10 23:38:02 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/12 16:33:44 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
+# include <limits.h>
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
-# include <limits.h>
 
 typedef struct s_philo
 {
@@ -49,9 +49,14 @@ typedef struct s_data
 // INIT
 int					init_structs(t_data *data, int ac, char **av);
 
+// PARSING
+int					is_not_valid(int ac, char **av);
+
 // UTILS
 long				ft_atol(const char *str);
 int					ft_atoi(const char *str);
 long				get_time_in_ms(void);
 
+// ROUTINE
+void				*monitor_routine(void *arg);
 #endif
