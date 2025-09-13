@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 20:58:22 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/13 23:44:05 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/14 00:53:03 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,21 @@ static int	check_all_ate_enough(t_data *data)
 
 	if (data->num_of_meal == -1)
 		return (0);
-	
 	pthread_mutex_lock(&data->stop_mutex);
 	if (data->stop_dinner)
 	{
 		pthread_mutex_unlock(&data->stop_mutex);
 		return (0);
 	}
-
 	i = 0;
 	finished = 0;
 	num_meals = data->num_of_meal;
 	while (i < data->number_of_philo)
 	{
+		pthread_mutex_lock(&data->philo[i].meal_mutex);
 		if (data->philo[i].meals_eaten >= num_meals)
 			finished++;
+		pthread_mutex_unlock(&data->philo[i].meal_mutex);
 		i++;
 	}
 	all_ate = (finished == data->number_of_philo);
@@ -62,21 +62,21 @@ void	*monitor_routine(void *arg)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&data->stop_mutex);
-
 		i = 0;
 		while (i < data->number_of_philo)
 		{
 			current_time = get_time_in_ms();
-			pthread_mutex_lock(&data->stop_mutex);
+			pthread_mutex_lock(&data->philo[i].meal_mutex);
 			last_meal = data->philo[i].last_meal_time;
 			is_dead = (current_time - last_meal >= data->time_to_die);
-			
+			pthread_mutex_unlock(&data->philo[i].meal_mutex);
+			pthread_mutex_lock(&data->stop_mutex);
 			if (is_dead)
 			{
 				data->stop_dinner = 1;
 				pthread_mutex_unlock(&data->stop_mutex);
 				pthread_mutex_lock(&data->print_lock);
-				printf("%ld %d died\n", current_time - data->start_time, 
+				printf("%ld %d died\n", current_time - data->start_time,
 					data->philo[i].id);
 				pthread_mutex_unlock(&data->print_lock);
 				return (NULL);
@@ -84,7 +84,6 @@ void	*monitor_routine(void *arg)
 			pthread_mutex_unlock(&data->stop_mutex);
 			i++;
 		}
-
 		if (check_all_ate_enough(data))
 		{
 			pthread_mutex_lock(&data->stop_mutex);

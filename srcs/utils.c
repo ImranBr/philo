@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:48:25 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/13 23:44:05 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/14 00:53:13 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	print_action(t_philo *philo, char *action)
 		timestamp = current_time - philo->data->start_time;
 	}
 	pthread_mutex_unlock(&philo->data->stop_mutex);
-
 	if (should_print)
 	{
 		pthread_mutex_lock(&philo->data->print_lock);

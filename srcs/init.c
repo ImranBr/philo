@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:19:00 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/13 23:03:40 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/14 00:52:56 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static int	init_philo(t_data *data)
 	i = 0;
 	while (i < data->number_of_philo)
 	{
-		if (pthread_mutex_init(&data->philo[i].right_fork, NULL) != 0)
+		if (pthread_mutex_init(&data->philo[i].right_fork, NULL) != 0
+			|| pthread_mutex_init(&data->philo[i].meal_mutex, NULL) != 0)
 			return (1);
 		i++;
 	}
