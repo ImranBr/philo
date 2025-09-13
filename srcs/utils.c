@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:48:25 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/12 16:31:52 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/13 22:41:35 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_atoi(const char *str)
 	i = 0;
 	result = 0;
 	while ((str[i] == ' ') || (str[i] >= 9 && str[i] <= 13))
-		i ++;
+		i++;
 	if (str[i] == '+')
 		i++;
 	while (str[i] >= '0' && str[i] <= '9')
@@ -52,8 +52,32 @@ int	ft_atoi(const char *str)
 
 long	get_time_in_ms(void)
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	print_action(t_philo *philo, char *action)
+{
+	long	timestamp;
+
+	pthread_mutex_lock(&philo->data->print_lock);
+	pthread_mutex_lock(&philo->data->stop_mutex);
+	if (!philo->data->stop_dinner)
+	{
+		timestamp = get_time_in_ms() - philo->data->start_time;
+		printf("%ld %d %s\n", timestamp, philo->id, action);
+	}
+	pthread_mutex_unlock(&philo->data->stop_mutex);
+	pthread_mutex_unlock(&philo->data->print_lock);
+}
+
+void	ft_usleep(long ms)
+{
+	long	start;
+
+	start = get_time_in_ms();
+	while ((get_time_in_ms() - start) < ms)
+		usleep(100);
 }

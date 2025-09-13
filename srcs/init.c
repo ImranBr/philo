@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:19:00 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/13 19:31:41 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/13 22:41:01 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ static int	create_philo_threads(t_data *data)
 	i = 0;
 	while (i < data->number_of_philo)
 	{
-		if (pthread_create(&data->philo[i].thread, NULL,
-				routine, (void *)&data->philo[i]) != 0)
+		if (pthread_create(&data->philo[i].thread, NULL, routine,
+				(void *)&data->philo[i]) != 0)
 		{
 			while (i > 0)
 			{
@@ -98,7 +98,7 @@ static int	create_philo_threads(t_data *data)
 int	init_threads(t_data *data)
 {
 	data->start_time = get_time_in_ms();
-	init_data_philo(data);
+	init_philo(data);
 	if (pthread_create(&data->monitor, NULL, monitor_routine, data) != 0)
 	{
 		write(2, "Failed to create monitor thread\n", 31);

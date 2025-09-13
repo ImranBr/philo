@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 19:07:49 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/13 21:03:15 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/13 22:41:28 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		usleep(200); // Décalage pour éviter deadlock
-
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->stop_mutex);
@@ -54,11 +53,10 @@ void	*routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->data->stop_mutex);
-
-		is_eating(philo);                      // Tout ce qui est lié au repas
-		print_action(philo, "is sleeping");    // Dormir
+		is_eating(philo);                   // Tout ce qui est lié au repas
+		print_action(philo, "is sleeping"); // Dormir
 		ft_usleep(philo->data->time_to_sleep);
-		print_action(philo, "is thinking");    // Penser
+		print_action(philo, "is thinking"); // Penser
 	}
 	return (NULL);
 }

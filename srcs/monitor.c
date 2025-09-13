@@ -6,16 +6,11 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 20:58:22 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/13 21:04:03 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/13 22:40:55 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-// void *monitor_routine(void *arg)
-// {
-//     (void)arg;
-// }
 
 void	*monitor_routine(void *arg)
 {
@@ -41,7 +36,7 @@ void	*monitor_routine(void *arg)
 			pthread_mutex_unlock(&data->stop_mutex);
 			i++;
 		}
-		pthread_usleep(100); // petite pause pour éviter CPU 100%
+		ft_usleep(100); // petite pause pour éviter CPU 100%
 	}
 	return (NULL);
 }

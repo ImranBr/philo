@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 18:46:41 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/13 19:32:23 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/13 22:32:03 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_data
 
 // INIT
 int					init_structs(t_data *data, int ac, char **av);
+int					init_threads(t_data *data);
 
 // PARSING
 int					is_not_valid(int ac, char **av);
@@ -56,9 +57,11 @@ int					is_not_valid(int ac, char **av);
 long				ft_atol(const char *str);
 int					ft_atoi(const char *str);
 long				get_time_in_ms(void);
+void				print_action(t_philo *philo, char *action);
+void				ft_usleep(long ms);
 
 // ROUTINE
 void				*monitor_routine(void *arg);
-void				*routine(void);
+void				*routine(void *arg);
 
 #endif
