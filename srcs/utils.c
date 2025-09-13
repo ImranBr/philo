@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:48:25 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/14 00:53:13 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/14 01:07:23 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,34 +60,33 @@ long	get_time_in_ms(void)
 
 void	print_action(t_philo *philo, char *action)
 {
-	long	current_time;
 	long	timestamp;
-	int		should_print;
 
+	pthread_mutex_lock(&philo->data->print_lock);
 	pthread_mutex_lock(&philo->data->stop_mutex);
-	should_print = !philo->data->stop_dinner;
-	if (should_print)
+	if (!philo->data->stop_dinner)
 	{
-		current_time = get_time_in_ms();
-		timestamp = current_time - philo->data->start_time;
+		timestamp = get_time_in_ms() - philo->data->start_time;
+		printf("%ld %d %s\n", timestamp, philo->id, action);
 	}
 	pthread_mutex_unlock(&philo->data->stop_mutex);
-	if (should_print)
-	{
-		pthread_mutex_lock(&philo->data->print_lock);
-		pthread_mutex_lock(&philo->data->stop_mutex);
-		if (!philo->data->stop_dinner)
-			printf("%ld %d %s\n", timestamp, philo->id, action);
-		pthread_mutex_unlock(&philo->data->stop_mutex);
-		pthread_mutex_unlock(&philo->data->print_lock);
-	}
+	pthread_mutex_unlock(&philo->data->print_lock);
 }
 
 void	ft_usleep(long ms)
 {
 	long	start;
+	long	elapsed;
+	long	remain;
 
 	start = get_time_in_ms();
-	while ((get_time_in_ms() - start) < ms)
-		usleep(100);
+	while (1)
+	{
+		elapsed = get_time_in_ms() - start;
+		if (elapsed >= ms)
+			break;
+		remain = ms - elapsed;
+		if (remain > 1)
+			usleep((remain > 1000) ? 1000 : remain);
+	}
 }
