@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:19:00 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/13 22:41:01 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/13 23:03:40 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static int	init_philo(t_data *data)
 		data->philo[i].last_meal_time = data->start_time;
 		data->philo[i].data = data;
 		data->philo[i].thread = 0;
+		data->philo[i].meals_eaten = 0;
 		if (data->philo[i].id == data->number_of_philo)
 			data->philo[i].left_fork = &data->philo[0].right_fork;
 		else

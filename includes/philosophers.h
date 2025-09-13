@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 18:46:41 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/13 22:32:03 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/13 23:03:40 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_philo
 	struct s_data	*data;
 	int				id;
 	long			last_meal_time;
+	int				meals_eaten;
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	right_fork;
