@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 18:46:41 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/12 16:33:44 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/13 19:32:23 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,6 @@ long				get_time_in_ms(void);
 
 // ROUTINE
 void				*monitor_routine(void *arg);
+void				*routine(void);
+
 #endif

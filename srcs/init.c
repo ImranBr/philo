@@ -6,7 +6,7 @@
 /*   By: ibarbouc <ibarbouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 16:19:00 by ibarbouc          #+#    #+#             */
-/*   Updated: 2025/09/12 16:33:26 by ibarbouc         ###   ########.fr       */
+/*   Updated: 2025/09/13 19:31:41 by ibarbouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,28 +73,41 @@ int	init_structs(t_data *data, int ac, char **av)
 	return (0);
 }
 
-int	init_thread(t_data *data)
+static int	create_philo_threads(t_data *data)
 {
 	int	i;
-	int	thread_created;
 
 	i = 0;
-	thread_created = 0;
 	while (i < data->number_of_philo)
 	{
-		if (pthread_create(&data->philo[i].thread, NULL, monitor_routine,
-				(void *)&data->philo[i]) != 0)
-			break ;
-		thread_created++;
+		if (pthread_create(&data->philo[i].thread, NULL,
+				routine, (void *)&data->philo[i]) != 0)
+		{
+			while (i > 0)
+			{
+				pthread_join(data->philo[i - 1].thread, NULL);
+				i--;
+			}
+			return (1);
+		}
 		i++;
 	}
-	if (thread_created < data->number_of_philo)
+	return (0);
+}
+
+int	init_threads(t_data *data)
+{
+	data->start_time = get_time_in_ms();
+	init_data_philo(data);
+	if (pthread_create(&data->monitor, NULL, monitor_routine, data) != 0)
 	{
-		while (thread_created > 0)
-		{
-			pthread_join(data->philo[thread_created - 1].thread, NULL);
-			thread_created--;
-		}
+		write(2, "Failed to create monitor thread\n", 31);
+		return (1);
+	}
+	data->monitor_created = 1;
+	if (create_philo_threads(data) != 0)
+	{
+		pthread_join(data->monitor, NULL);
 		return (1);
 	}
 	return (0);
